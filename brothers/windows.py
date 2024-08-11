@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 class MainWindow:
-    def __init__(self, symbols, live_data):
+    def __init__(self, symbols_df, live_data):
         self.live_data = live_data
-        self.symbols = symbols
+        self.symbols = symbols_df
         self.root = tk.Tk()
         self.root.resizable(True, True)
         
@@ -38,10 +38,10 @@ class MainWindow:
         frame_title = tk.Label(frame, text="Price Data", font=("Arial", 18, "bold"))
         frame_title.pack(fill=tk.X, padx=10, pady=(10, 0))
 
-        data = self.live_data.groupby('Ticker').first().reset_index()
+        data = self.live_data.groupby('Symbol').first().reset_index()
         data = data.drop(columns=['Adj Close'])
 
-        columns_order = ['Datetime', 'Ticker', 'Open', 'High', 'Low', 'Close', 'Volume']
+        columns_order = ['Datetime', 'Symbol', 'Open', 'High', 'Low', 'Close', 'Volume']
         columns_width = [130, 50, 60, 60, 60, 60, 130]
         data = data[columns_order]
 
@@ -73,8 +73,8 @@ class MainWindow:
         frame_title.pack(fill=tk.X, padx=10, pady=(10, 0))
 
         
-        columns_order = ['Symbol', 'Company Name', 'Url']
-        columns_width = [50, 200, 250]
+        columns_order = ['Symbol', 'Name', 'YahooTicker', 'Url']
+        columns_width = [50, 200, 50, 250]
         data = self.symbols[columns_order]
 
         #tree = ttk.Treeview(frame, columns=list(data.columns), show='headings')
