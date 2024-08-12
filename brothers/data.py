@@ -85,7 +85,7 @@ class Data:
         self.hist_data = hist_data
         self.all_dates = self.hist_data.Datetime.unique().tolist()
         self.tickers = self.hist_data.Symbol.unique().tolist()
-        self.tickers_df = tickers_df
+        self.tickers_df = tickers_df[tickers_df.YahooTicker.isin(self.tickers)]
 
 
     def load_data_from_csv(self, filename='V1--hist_data_2024-07-31.csv'):
@@ -96,7 +96,7 @@ class Data:
             self.all_dates = self.hist_data.Datetime.unique().tolist()
             self.tickers = self.hist_data.Symbol.unique()
             self.tickers_df = pd.DataFrame(self.tickers, columns=['Symbol'])
-            self.tickers_df["Company Name"] = "Not loaded"
+            self.tickers_df["Name"] = "Not loaded"
             self.tickers_df["YahooTicker"] = self.tickers
             self.tickers_df["Url"] = "Not loaded"
         else:
