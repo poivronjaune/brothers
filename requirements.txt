@@ -1,5 +1,6 @@
 yfinance
 pandas
+lightweight_charts
 pytest
 twine
 setuptools

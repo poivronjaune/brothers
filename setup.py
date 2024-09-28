@@ -29,6 +29,7 @@ setup(
     install_requires=[
         "pandas",
         "yfinance",
+        "lightweight_charts"
     ],
     extras_require={
         "dev": ["pytest", "twine"],

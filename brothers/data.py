@@ -1,7 +1,6 @@
-import json
+import os
 import pandas as pd
 import yfinance as yf
-import json
 from datetime import datetime
 
 class Data:
@@ -87,18 +86,34 @@ class Data:
         self.tickers = self.hist_data.Symbol.unique().tolist()
         self.tickers_df = tickers_df[tickers_df.YahooTicker.isin(self.tickers)]
 
+    def add_comanies_and_url(self, data):
+        try:
+            companies = pd.read_csv('companies.csv')
+        except:
+            companies = None  
+        if companies is not None:
+            pass
+
+        return data
 
     def load_data_from_csv(self, filename='V1--hist_data_2024-07-31.csv'):
         data = pd.read_csv(filename, index_col=False)
         required_columns = ['Datetime','Symbol','Adj Close','Close','High','Low','Open','Volume']
+
         if set(required_columns).issubset(data.columns):
             self.hist_data = data
             self.all_dates = self.hist_data.Datetime.unique().tolist()
             self.tickers = self.hist_data.Symbol.unique()
+            
             self.tickers_df = pd.DataFrame(self.tickers, columns=['Symbol'])
             self.tickers_df["Name"] = "Not loaded"
             self.tickers_df["YahooTicker"] = self.tickers
             self.tickers_df["Url"] = "Not loaded"
+            if os.path.exists('companies.csv'):
+                companies = pd.read_csv('companies.csv')
+                merged_df = pd.merge(self.tickers_df, companies[['YahooTicker', 'Name', 'Url']], left_on='Symbol', right_on='YahooTicker', how='left')
+                self.tickers_df["Name"] = merged_df["Name_y"].fillna(self.tickers_df["Name"])
+                self.tickers_df["Url"] = merged_df["Url_y"].fillna(self.tickers_df["Url"])
         else:
             self.hist_data = None
             self.all_dates = None

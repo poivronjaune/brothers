@@ -3,11 +3,16 @@ import pandas as pd
 import yfinance as yf
 from datetime import date, datetime
 
+#from flask import Flask, render_template, request
+#import threading
+
 from brothers.windows import MainWindow
+from brothers.webframe import WebFrame
 from brothers.data import Data
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
+    web_frame = WebFrame()
     data_obj = Data()
 
     #list_of_tickers_to_load_df = data_obj.get_tickers_from_github()

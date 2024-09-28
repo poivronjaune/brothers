@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Chart</title>
+    <!-- Include the Lightweight Charts library from a CDN -->
+    <script src="https://unpkg.com/lightweight-charts@4.0.0/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+    <div id="chart" style="width: 100%; height: 500px;"></div>
+    <script>
+        const chartData = {{ chart_data | safe }};
+        console.log(chartData)
+
+        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+            width: window.innerWidth,
+            height: 500,
+            layout: {
+                backgroundColor: '#ffffff',
+                textColor: '#000',
+            },
+            grid: {
+                vertLines: {
+                    color: '#e1e1e1',
+                },
+                horzLines: {
+                    color: '#e1e1e1',
+                },
+            },
+        });
+
+        const candleSeries = chart.addCandlestickSeries();
+        candleSeries.setData(chartData);
+
+        window.addEventListener('resize', () => {
+            chart.resize(window.innerWidth, 500);
+        });
+    </script>
+</body>
+</html>
